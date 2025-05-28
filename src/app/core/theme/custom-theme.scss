@@ -1,0 +1,154 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+
+// Define your custom palette
+$primary-palette: (
+  50: #e8f5e9,
+  100: #c8e6c9,
+  200: #a5d6a7,
+  300: #81c784,
+  400: #66bb6a,
+  500: #4caf50,
+  // Primary color - Green
+  600: #43a047,
+  700: #388e3c,
+  800: #2e7d32,
+  900: #1b5e20,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);
+
+$accent-palette: (
+  50: #fce4ec,
+  100: #f8bbd0,
+  200: #f48fb1,
+  300: #f06292,
+  400: #ec407a,
+  500: #e91e63,
+  // Accent color
+  600: #d81b60,
+  700: #c2185b,
+  800: #ad1457,
+  900: #880e4f,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);
+
+// Create the palettes
+$custom-primary: mat.define-palette($primary-palette);
+$custom-accent: mat.define-palette($accent-palette);
+
+// Create the theme
+$custom-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $custom-primary,
+      accent: $custom-accent,
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+  )
+);
+
+// Apply the theme to all Angular Material components
+@include mat.all-component-themes($custom-theme);
+
+// Custom styles for specific components
+.mat-toolbar.mat-primary {
+  --mat-toolbar-container-background-color: #{mat.get-color-from-palette(
+      $custom-primary,
+      500
+    )};
+  --mat-toolbar-container-text-color: #{mat.get-color-from-palette(
+      $custom-primary,
+      500-contrast
+    )};
+}
+
+.mat-button.mat-primary {
+  --mat-mdc-button-persistent-ripple-color: #{mat.get-color-from-palette(
+      $custom-primary,
+      500
+    )};
+  --mat-mdc-button-ripple-color: rgba(
+    #{mat.get-color-from-palette($custom-primary, 500)},
+    0.1
+  );
+  --mdc-filled-button-container-color: #{mat.get-color-from-palette(
+      $custom-primary,
+      500
+    )};
+  --mdc-filled-button-label-text-color: #{mat.get-color-from-palette(
+      $custom-primary,
+      500-contrast
+    )};
+}
+
+.mat-raised-button.mat-primary {
+  --mat-mdc-button-persistent-ripple-color: #{mat.get-color-from-palette(
+      $custom-primary,
+      500
+    )};
+  --mat-mdc-button-ripple-color: rgba(
+    #{mat.get-color-from-palette($custom-primary, 500)},
+    0.1
+  );
+  --mdc-protected-button-container-color: #{mat.get-color-from-palette(
+      $custom-primary,
+      500
+    )};
+  --mdc-protected-button-label-text-color: #{mat.get-color-from-palette(
+      $custom-primary,
+      500-contrast
+    )};
+}
+
+.mat-icon-button.mat-primary {
+  --mat-mdc-button-persistent-ripple-color: #{mat.get-color-from-palette(
+      $custom-primary,
+      500
+    )};
+  --mat-mdc-button-ripple-color: rgba(
+    #{mat.get-color-from-palette($custom-primary, 500)},
+    0.1
+  );
+  color: #{mat.get-color-from-palette($custom-primary, 500)};
+}
+
+// Custom styles for the sidenav
+.mat-sidenav {
+  background-color: #ffffff;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.mat-nav-list .mat-list-item {
+  &.active {
+    background-color: #{mat.get-color-from-palette($custom-primary, 50)};
+    color: #{mat.get-color-from-palette($custom-primary, 500)};
+  }
+}
+
+// Custom styles for the content area
+.content {
+  background-color: #f5f5f5;
+}

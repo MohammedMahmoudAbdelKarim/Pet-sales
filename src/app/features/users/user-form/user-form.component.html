@@ -1,0 +1,87 @@
+<div class="p-5">
+  <h2 mat-dialog-title>{{ data?.id ? "Edit User" : "Add New User" }}</h2>
+
+  <div class="form-scroll-container">
+    <form [formGroup]="userForm" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="fname" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lname" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" required />
+      </mat-form-field>
+
+      <div class="avatar-upload-container">
+        <label for="avatarUpload" class="upload-label">Upload Avatar</label>
+        <input
+          type="file"
+          id="avatarUpload"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          required
+          class="upload-input"
+        />
+
+        <div *ngIf="selectedFileName" class="file-name">
+          Selected file: {{ selectedFileName }}
+        </div>
+
+        <div
+          *ngIf="userForm.get('avatar')?.value"
+          class="avatar-preview-wrapper"
+        >
+          <img
+            [src]="userForm.get('avatar')?.value"
+            alt="avatar"
+            class="avatar-preview"
+          />
+        </div>
+
+        <div
+          class="mat-error text-danger mt-1"
+          *ngIf="
+            userForm.get('avatar')?.invalid && userForm.get('avatar')?.touched
+          "
+        >
+          Avatar is required
+        </div>
+      </div>
+
+      <div
+        style="
+          display: flex;
+          justify-content: flex-end;
+          gap: 8px;
+          margin-top: 16px;
+        "
+      >
+        <button mat-button type="button" (click)="cancel()">Cancel</button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="userForm.invalid"
+        >
+          {{ data?.id ? "Update" : "Add" }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

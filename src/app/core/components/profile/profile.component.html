@@ -1,0 +1,10 @@
+<div class="profile-container">
+  <div class="profile-card">
+    <img class="avatar" [src]="profile.avatar" alt="{{ profile.avatar }}" />
+    <h2>{{ profile.fname + " " + profile.lname }}</h2>
+    <p class="email">
+      <mat-icon>email</mat-icon>
+      {{ profile.username }}
+    </p>
+  </div>
+</div>

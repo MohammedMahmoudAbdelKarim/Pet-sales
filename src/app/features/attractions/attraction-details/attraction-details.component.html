@@ -1,0 +1,23 @@
+<div class="p-4">
+  <h2 mat-dialog-title>Attraction Details</h2>
+
+  <div mat-dialog-content>
+    <p><strong>Name:</strong> {{ data.name }}</p>
+    <p><strong>Detail:</strong> {{ data.detail }}</p>
+    <p><strong>Latitude:</strong> {{ data.latitude }}</p>
+    <p><strong>Longitude:</strong> {{ data.longitude }}</p>
+
+    <div *ngIf="data.coverimage" style="margin-top: 10px">
+      <strong>Cover Image:</strong><br />
+      <img
+        [src]="data.coverimage"
+        alt="cover image"
+        style="max-width: 150px; border-radius: 8px"
+      />
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="mt-5 w-100 d-flex justify-content-end">
+    <button mat-button (click)="close()">Close</button>
+  </div>
+</div>

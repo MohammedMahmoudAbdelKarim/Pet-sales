@@ -1,0 +1,102 @@
+<div class="container">
+  <h2>User List</h2>
+  <div class="d-flex align-items-center justify-content-between">
+    <!-- Search Input -->
+    <mat-form-field
+      appearance="outline"
+      style="width: 300px; margin-bottom: 16px"
+    >
+      <mat-label>Search users</mat-label>
+      <input
+        #searchInput
+        matInput
+        placeholder="Search by name or email"
+        (input)="onSearchChange(searchInput.value)"
+      />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="openAddUserDialog()">
+      <mat-icon>person_add</mat-icon>
+      Add User
+    </button>
+  </div>
+
+  <!-- Table -->
+  <table
+    mat-table
+    [dataSource]="users"
+    matSort
+    (matSortChange)="onSortChange($event)"
+    class="mat-elevation-z8"
+  >
+    <!-- Avatar Column -->
+    <ng-container matColumnDef="avatar">
+      <th mat-header-cell *matHeaderCellDef>Avatar</th>
+      <td mat-cell *matCellDef="let user">
+        <img
+          [src]="user.avatar"
+          alt="avatar"
+          width="40"
+          height="40"
+          style="border-radius: 50%"
+        />
+      </td>
+    </ng-container>
+
+    <!-- First Name Column -->
+    <ng-container matColumnDef="fname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+      <td mat-cell *matCellDef="let user">{{ user.fname }}</td>
+    </ng-container>
+
+    <!-- Last Name Column -->
+    <ng-container matColumnDef="lname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+      <td mat-cell *matCellDef="let user">{{ user.lname }}</td>
+    </ng-container>
+
+    <!-- Username Column -->
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+      <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let user">
+        <div class="d-flex algin-items-center justify-content-end">
+          <button mat-icon-button color="primary" (click)="onEdit(user)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="secondary" (click)="onView(user)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDelete(user.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr class="mat-row" *ngIf="users.length === 0">
+      <td
+        class="mat-cell"
+        [attr.colspan]="displayedColumns.length"
+        style="text-align: center"
+      >
+        No users found.
+      </td>
+    </tr>
+  </table>
+
+  <!-- Paginator -->
+  <mat-paginator
+    [length]="totalUsers"
+    [pageSize]="10"
+    [pageSizeOptions]="[10, 20, 50, 100]"
+    (page)="onPageChange($event)"
+  ></mat-paginator>
+</div>

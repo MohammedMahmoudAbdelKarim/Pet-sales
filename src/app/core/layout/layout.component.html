@@ -1,0 +1,106 @@
+<div class="layout-container">
+  <!-- Header with Navigation -->
+  <mat-toolbar color="primary" class="header">
+    <button mat-icon-button (click)="toggleSidenav()" class="menu-button">
+      <mat-icon>{{ sidenav.opened ? "menu_open" : "menu" }}</mat-icon>
+    </button>
+    <span class="app-title">White Helmet Dashboard</span>
+    <span class="spacer"></span>
+    <nav class="nav-links">
+      <a mat-button routerLink="/users" routerLinkActive="active">
+        <mat-icon>people</mat-icon>
+        <span>Users</span>
+      </a>
+      <a mat-button routerLink="/attractions" routerLinkActive="active">
+        <mat-icon>attractions</mat-icon>
+        <span>Attractions</span>
+      </a>
+      <a mat-button routerLink="/pet-sales" routerLinkActive="active">
+        <mat-icon>pets</mat-icon>
+        <span>Pet Sales</span>
+      </a>
+    </nav>
+
+    <!-- If user is logged in -->
+    <button
+      *ngIf="user; else showLogin"
+      mat-icon-button
+      [matMenuTriggerFor]="profileMenu"
+      aria-label="User profile menu"
+      class="profile-button"
+    >
+      <img
+        *ngIf="user.avatar; else noAvatar"
+        [src]="user.avatar"
+        alt="avatar"
+        width="40"
+        height="40"
+        style="border-radius: 50%"
+      />
+
+      <ng-template #noAvatar>
+        <mat-icon>account_circle</mat-icon>
+      </ng-template>
+    </button>
+
+    <!-- Login button when user is not logged in -->
+    <ng-template #showLogin>
+      <button mat-button (click)="login()" class="login-button">
+        <mat-icon>login</mat-icon>
+        <span>Login</span>
+      </button>
+    </ng-template>
+
+    <mat-menu #profileMenu="matMenu">
+      <button mat-menu-item routerLink="profile">
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <!-- Sidenav -->
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" [opened]="false" class="sidenav">
+      <mat-nav-list>
+        <a
+          mat-list-item
+          routerLink="/users"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon matListItemIcon>people</mat-icon>
+          <span matListItemTitle>Users</span>
+        </a>
+        <a
+          mat-list-item
+          routerLink="/attractions"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon matListItemIcon>attractions</mat-icon>
+          <span matListItemTitle>Attractions</span>
+        </a>
+        <a
+          mat-list-item
+          routerLink="/pet-sales"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon matListItemIcon>pets</mat-icon>
+          <span matListItemTitle>Pet Sales</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Content -->
+    <mat-sidenav-content class="content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

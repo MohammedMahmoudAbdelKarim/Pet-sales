@@ -1,59 +1,107 @@
-# WhitehelmetDashboard
+# White Helmet Dashboard
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.13.
+A modern Angular dashboard application for managing users, attractions, and viewing pet sales statistics.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- **User Management**
+  - List users with pagination and sorting
+  - Add, edit, and delete users
+  - Search functionality
+  - Form validation
 
-```bash
-ng serve
+- **Attractions Management**
+  - List attractions with pagination and sorting
+  - Add, edit, and delete attractions
+  - Search functionality
+  - Form validation
+
+- **Pet Sales Statistics**
+  - Weekly sales trend chart
+  - Daily sales details
+  - Date selection
+  - Interactive data visualization
+
+- **Authentication**
+  - Login with JWT
+  - Protected routes
+  - Secure token storage
+  - Automatic token injection
+
+## Technical Stack
+
+- Angular 19
+- Angular Material
+- NgxCharts
+- RxJS
+- TypeScript
+
+## Project Structure
+
+```
+src/
+  app/
+    core/
+      auth/           # Authentication related components and services
+    features/
+      users/          # User management feature
+      attractions/    # Attractions management feature
+      pet-sales/      # Pet sales statistics feature
+    shared/           # Shared components and utilities
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Getting Started
 
-## Code scaffolding
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd whitehelmet-dashboard
+   ```
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```bash
-ng generate component component-name
-```
+3. Start the development server:
+   ```bash
+   ng serve
+   ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+4. Open your browser and navigate to `http://localhost:4200`
 
-```bash
-ng generate --help
-```
+## Development
 
-## Building
+- The application uses lazy loading for better performance
+- All components are standalone
+- Material Design components for consistent UI
+- Responsive design for all screen sizes
+- Error handling and loading states
+- Form validation
+- Type safety with TypeScript
 
-To build the project run:
+## API Integration
 
-```bash
-ng build
-```
+The application integrates with the following APIs:
+- User management: `/api/users/*`
+- Attractions management: `/api/auth/attractions/*`
+- Pet sales statistics: `/api/pets/*`
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Authentication
 
-## Running unit tests
+- JWT-based authentication
+- Token stored in session storage
+- HTTP interceptor for automatic token injection
+- Route guards for protected routes
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Contributing
 
-```bash
-ng test
-```
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
 
-## Running end-to-end tests
+## License
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project is licensed under the MIT License.

@@ -1,0 +1,106 @@
+<div class="container">
+  <h2>Pet Sales</h2>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Pet Sales Statistics</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="date-picker">
+        <mat-form-field>
+          <mat-label>Select Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [(ngModel)]="selectedDate"
+            (dateChange)="onDateChange()"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="chart-container">
+        <ngx-charts-line-chart
+          *ngIf="weeklySales"
+          [view]="[1000, 400]"
+          [scheme]="colorScheme"
+          [results]="weeklySales.series"
+          [gradient]="true"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [legendTitle]="'Categories'"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          xAxisLabel="Date"
+          yAxisLabel="Sales"
+        >
+        </ngx-charts-line-chart>
+      </div>
+
+      <div class="summary">
+        <h3>Weekly Summary</h3>
+        <p>Total Sales: ${{ calculateTotalSales() | number : "1.2-2" }}</p>
+        <p *ngIf="weeklySales?.series">
+          Period: {{ weeklySales.series[0].series[0].name | date }} -
+          {{
+            weeklySales.series[0].series[
+              weeklySales.series[0].series.length - 1
+            ].name | date
+          }}
+        </p>
+      </div>
+
+      <div class="sales-table">
+        <h2>Daily Sales</h2>
+        <table mat-table [dataSource]="dailySales">
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let sale">{{ sale.date | date }}</td>
+          </ng-container>
+          <ng-container matColumnDef="animal">
+            <th mat-header-cell *matHeaderCellDef>Animal</th>
+            <td mat-cell *matCellDef="let sale">
+              {{ sale.animal }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>Price</th>
+            <td mat-cell *matCellDef="let sale">
+              {{ sale.price | currency }}
+            </td>
+          </ng-container>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="['date', 'animal', 'price']"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: ['date', 'animal', 'price']"
+          ></tr>
+          <tr class="mat-row" *ngIf="dailySales.length === 0">
+            <td
+              class="mat-cell"
+              [attr.colspan]="['date', 'animal', 'price'].length"
+              style="text-align: center"
+            >
+              No sales found.
+            </td>
+          </tr>
+        </table>
+
+        <mat-paginator
+          [length]="totalSales"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          (page)="onPageChange($event)"
+          aria-label="Select page of sales"
+        >
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

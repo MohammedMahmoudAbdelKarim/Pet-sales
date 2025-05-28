@@ -1,0 +1,10 @@
+<div class="p-3">
+  <h2 mat-dialog-title class="fw-bold text-danger">
+    {{ data.title || "Confirm" }}
+  </h2>
+  <mat-dialog-content>{{ data.message || "Are you sure?" }}</mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="warn" (click)="onConfirm()">Delete</button>
+  </mat-dialog-actions>
+</div>
