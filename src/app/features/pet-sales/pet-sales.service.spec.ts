@@ -5,6 +5,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { DailySales, WeeklySales } from '@app/core/models/pet-sales.model';
+import { environment } from '../../../environments/environment';
 
 describe('PetSalesService', () => {
   let service: PetSalesService;
@@ -29,32 +30,39 @@ describe('PetSalesService', () => {
   });
 
   describe('getDailySales', () => {
-    const mockDailySales: DailySales[] = [
-      { date: '2025-05-28', animal: 'Dog', price: 460.72 },
-      { date: '2025-05-29', animal: 'Cat', price: 62.74 },
-    ];
+    const mockDailySales: DailySales = {
+      date: '2025-05-28',
+      animal: 'Dog',
+      price: 460.72,
+    };
 
     it('should return daily sales data', () => {
-      service.getDailySales().subscribe((data) => {
+      const testDate = new Date('2025-05-28');
+      service.getDailySales(testDate).subscribe((data: DailySales) => {
         expect(data).toEqual(mockDailySales);
       });
 
-      const req = httpMock.expectOne('api/pet-sales/daily');
+      const req = httpMock.expectOne(
+        `${environment.apiUrl}/pets/${testDate.toISOString()}`
+      );
       expect(req.request.method).toBe('GET');
       req.flush(mockDailySales);
     });
 
     it('should handle error when fetching daily sales', () => {
+      const testDate = new Date('2025-05-28');
       const errorMessage = 'Error fetching daily sales';
 
-      service.getDailySales().subscribe({
+      service.getDailySales(testDate).subscribe({
         error: (error) => {
           expect(error.status).toBe(500);
           expect(error.statusText).toBe(errorMessage);
         },
       });
 
-      const req = httpMock.expectOne('api/pet-sales/daily');
+      const req = httpMock.expectOne(
+        `${environment.apiUrl}/pets/${testDate.toISOString()}`
+      );
       req.flush(errorMessage, {
         status: 500,
         statusText: errorMessage,
@@ -86,26 +94,32 @@ describe('PetSalesService', () => {
     };
 
     it('should return weekly sales data', () => {
-      service.getWeeklySales().subscribe((data) => {
+      const testDate = new Date('2025-05-28');
+      service.getWeeklySales(testDate).subscribe((data) => {
         expect(data).toEqual(mockWeeklySales);
       });
 
-      const req = httpMock.expectOne('api/pet-sales/weekly');
+      const req = httpMock.expectOne(
+        `${environment.apiUrl}/pets/7days/${testDate.toISOString()}`
+      );
       expect(req.request.method).toBe('GET');
       req.flush(mockWeeklySales);
     });
 
     it('should handle error when fetching weekly sales', () => {
+      const testDate = new Date('2025-05-28');
       const errorMessage = 'Error fetching weekly sales';
 
-      service.getWeeklySales().subscribe({
+      service.getWeeklySales(testDate).subscribe({
         error: (error) => {
           expect(error.status).toBe(500);
           expect(error.statusText).toBe(errorMessage);
         },
       });
 
-      const req = httpMock.expectOne('api/pet-sales/weekly');
+      const req = httpMock.expectOne(
+        `${environment.apiUrl}/pets/7days/${testDate.toISOString()}`
+      );
       req.flush(errorMessage, {
         status: 500,
         statusText: errorMessage,

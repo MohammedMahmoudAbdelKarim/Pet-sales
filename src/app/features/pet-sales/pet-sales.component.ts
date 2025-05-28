@@ -41,7 +41,7 @@ import { LoadingService } from '@app/core/services/loading.service';
 })
 export class PetSalesComponent implements OnInit {
   dailySales: DailySales[] = [];
-  weeklySales: any = null;
+  weeklySales: WeeklySales | null = null;
   totalSales = 0;
   pageSize = 10;
   selectedDate: Date = new Date();
@@ -63,26 +63,29 @@ export class PetSalesComponent implements OnInit {
   }
 
   loadSales() {
+    this.loadingService.setLoading(true);
     this.petSalesService.getDailySales(this.selectedDate).subscribe({
-      next: (response: DailySales | any) => {
-        console.log(response);
-        this.dailySales = response;
-        this.totalSales = response.length;
+      next: (response: DailySales) => {
+        this.dailySales = [response];
+        this.totalSales = 1;
+        this.loadingService.setLoading(false);
       },
       error: (error) => {
         console.error('Error loading sales:', error);
+        this.dailySales = [];
+        this.totalSales = 0;
+        this.loadingService.setLoading(false);
       },
     });
   }
 
   onSearch(search: string) {
-    // this.loadSales(0, 10, search);
+    // Implement search functionality if needed
   }
 
   onPageChange(event: { pageIndex: number; pageSize: number }) {
     this.pageSize = event.pageSize;
-    // TODO: Implement pagination in the API call
-    // this.loadSales(event.pageIndex, event.pageSize);
+    // Implement pagination if needed
   }
 
   onDateChange() {
@@ -91,51 +94,30 @@ export class PetSalesComponent implements OnInit {
   }
 
   loadWeeklySales() {
+    this.loadingService.setLoading(true);
     this.petSalesService.getWeeklySales(this.selectedDate).subscribe({
-      next: (response: any) => {
-        console.log('Raw API Response:', response);
-
-        // Transform the data for ngx-charts
-        const transformedData = {
-          series: response.series.map(
-            (series: { name: string; data: number[] }) => ({
-              name: series.name,
-              series: series.data.map((value: number, index: number) => ({
-                name: response.categories[index],
-                value: value,
-              })),
-            })
-          ),
-        };
-
-        console.log('Transformed Data:', transformedData);
-        this.weeklySales = transformedData;
+      next: (response: WeeklySales) => {
+        this.weeklySales = response;
+        this.loadingService.setLoading(false);
       },
       error: (error) => {
         console.error('Error loading weekly sales:', error);
+        this.weeklySales = null;
+        this.loadingService.setLoading(false);
       },
     });
   }
 
   formatXAxis(index: number): string {
-    if (!this.weeklySales?.series) return '';
-    return this.weeklySales.series[index].name;
+    if (!this.weeklySales?.categories) return '';
+    return this.weeklySales.categories[index] || '';
   }
 
   calculateTotalSales(): number {
     if (!this.weeklySales?.series) return 0;
 
-    return this.weeklySales.series.reduce(
-      (total: number, series: { series: { value: number }[] }) => {
-        return (
-          total +
-          series.series.reduce(
-            (sum: number, point: { value: number }) => sum + point.value,
-            0
-          )
-        );
-      },
-      0
-    );
+    return this.weeklySales.series.reduce((total, series) => {
+      return total + series.data.reduce((sum, value) => sum + value, 0);
+    }, 0);
   }
 }

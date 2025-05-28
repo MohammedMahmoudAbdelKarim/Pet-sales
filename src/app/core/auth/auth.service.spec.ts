@@ -3,7 +3,8 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { AuthService, LoginResponse, User } from './auth.service';
+import { AuthService, LoginResponse } from './auth.service';
+import { User } from '../models/user.model';
 import { APP_CONFIG } from '../config/app.config';
 import { firstValueFrom } from 'rxjs';
 
@@ -13,12 +14,15 @@ describe('AuthService', () => {
 
   const mockUser: User = {
     id: 1,
-    name: 'Test User',
+    fname: 'Test',
+    lname: 'User',
+    username: 'testuser',
     email: 'test@example.com',
+    avatar: 'test-avatar.jpg',
   };
 
   const mockLoginResponse: LoginResponse = {
-    token: 'test-token',
+    accessToken: 'test-token',
     user: mockUser,
   };
 
